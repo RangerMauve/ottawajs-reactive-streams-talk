@@ -1,0 +1,27 @@
+{
+  "name": "ottawajs-reactive-streams-talk",
+  "version": "1.0.0",
+  "description": "Talk about reactive streams for Ottawa JS",
+  "main": "index.js",
+  "dependencies": {
+    "npm-watch": "^0.1.4",
+    "onchange": "^2.5.0",
+    "reveal-md": "^0.0.27"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "build-presentation": "reveal-md presentation.md --static > index.html",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "onchange presentation.md -- npm run build-presentation"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RangerMauve/ottawajs-reactive-streams-talk.git"
+  },
+  "author": "rangermauve",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RangerMauve/ottawajs-reactive-streams-talk/issues"
+  },
+  "homepage": "https://github.com/RangerMauve/ottawajs-reactive-streams-talk"
+}
