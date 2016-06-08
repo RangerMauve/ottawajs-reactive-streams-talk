@@ -233,6 +233,76 @@ Note: Rx and Kefir don't have this, use `map` and return a constant instead.
 
 ---
 
+## Hot and Cold Observables
+
+- **Cold:** Doesn't push data until something is subscribed
+- **Hot:** Creates data even if nothing has subscribed
+
+Note: Most of these libraries make use of a concept called `hot` and `cold` streams. By default, when you set up a series of streams, nothing actually happens. What happens is the pipeline is ready to be executed, but nothing actually subscribes to the original event sources until something subscribes on the pipeline itself.
+
+---
+
+### Cold pipelines don't do anything
+
+
+```javascript
+var someInput = "cats are cool".split("");
+var backwardsInput = Rx.Observable
+    .from(someInput)
+    .map((l) => l.toUpperCase())
+    .scan((acc, k) => k + acc , "");
+```
+
+Note: This actually won't do anything since nothing is subscribing to the `backwardsInput` stream. In order for this to actually perform something, one must first call `backwardsInput.subscribe`. This will then start subscribing to things up the chain of observables until the top most one calls actually starts iterating through the source array.
+
+---
+
+### Subscribing makes things happen
+
+```javascript
+backwardsInput.subscribe((result) => console.log(result));
+```
+
+Note: The fact that nothing actually executes until an explicit subscribe is made is what makes a stream `cold`. The opposite is a stream that will create events regardless of when. An example of this is `mousemove` events from an element (in RX). They will start getting pushed down to any potential subscribers right away. The fact that they are active even when there is no explicit subscription is what makes them `hot`. Not all Reactive Programming libraries have a concept of cold observables. The Observable implementation that's going to be part of the JavaScript runtime, for instance, only has a concept of `cold` observables. Generally, most sources of data can be modelled as `cold` observables. xstream, however uses exclusively `hot` observables.
+
+---
+
+## Unicast and Multicast
+
+- Unicast: Sets up a fresh source per subscription
+- Multicast: Re-uses the same source between subscriptions (hot)
+
+Note: In most cases, every time `subscribe` is called on a stream, it creates a new pipeline that connects to the source of data. The fact that the pipeline produces data for one subscriber at a time is what makes it `unicast`. This could lead to unexpected results when computations or side effects might be duplicated. To avoid wasted cycles and confusing code, most libraries provide a way to turn an existing stream into a `multicast` Observable. What this means is that the entire pipeline up until pipeline up until that point is going to be shared for any subsequent observables. This is useful if you have a long chain of computations which will split up into many branches, or for cases where you want to branch out, but don't want to have duplicated side-effects or subscriptions to a data source. Multicast observables are usually `hot`.
+
+
+## Example
+
+```javascript
+var numbers = Rx.Observable.from([1,2,3,4,5]);
+
+var mappedNumbers = numbers.map(function(number){
+	console.log("Currently on:", number);
+	return number - 1;
+});
+
+var sum = mappedNumbers.reduce((a,b) => a + b);
+
+var product = mappedNumbers.reduce((a, b) => a * b);
+
+sum.subscribe((result) => console.log("The sum is", result));
+product.subscribe((result) => console.log("The product is", result));
+```
+
+---
+
+## Forcing things to be mutlicast
+
+- Assume things are unicast
+- use `multicast` operator
+- Don't overuse it, be functional
+
+---
+
 ## References
 
 [Andre Staltz](https://twitter.com/andrestaltz) is the bomb, so follow him everywhere.
@@ -242,5 +312,7 @@ Note: Rx and Kefir don't have this, use `map` and return a constant instead.
 [es-observable](https://github.com/zenparsing/es-observable) is the standard being added to the JavaScript runtime. It's going to let you inter-operate with different libraries, sort of like what promises/A+ did for promise libraries.
 
 [The MostJS internals](https://github.com/cujojs/most/wiki/Architecture) provide some good insight as to how the internals work
+
+---
 
 ## Get coding!
