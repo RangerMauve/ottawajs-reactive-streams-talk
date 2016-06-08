@@ -231,20 +231,16 @@ S.mapTo(8): 8-8-8-8-8|
 
 Note: Rx and Kefir don't have this, use `map` and return a constant instead.
 
+---
+
 ## References
 
 [Andre Staltz](https://twitter.com/andrestaltz) is the bomb, so follow him everywhere.
 
 [Introduction to Reactive Programming](https://gist.github.com/staltz/868e7e9bc2a7b8c1f754)
 
-[RxJS](https://github.com/Reactive-Extensions/RxJS) is the most popular implementation. Has a lot of focus on being "correct" and can sometimes get caught on unnecessary details and a lot of types. Most "mature" implementation in that it was ported over from predecessors in C# and Java
-
-[MostJS](https://github.com/cujojs/most/blob/master/docs/api.md) is a cool implementation of Reactive streams. The concepts are presented in a simple way, and the API docs are great. Doesn't seem to be as popular as RX though.
-
-[Kefir](http://rpominov.github.io/kefir/) is another implementation that focused on high performance and low memory usage. Apparenly slower than MostJS. Seems to have the most different API between the three.
-
-[xstream](https://github.com/staltz/xstream) a minimal implementation by Andre Staltz. Has a few simple concepts and types to learn. Few operators that were shown to be the most often used from Rx.
-
 [es-observable](https://github.com/zenparsing/es-observable) is the standard being added to the JavaScript runtime. It's going to let you inter-operate with different libraries, sort of like what promises/A+ did for promise libraries.
 
 [The MostJS internals](https://github.com/cujojs/most/wiki/Architecture) provide some good insight as to how the internals work
+
+## Get coding!
